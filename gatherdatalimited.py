@@ -30,6 +30,7 @@ for venue in venues:
     url = str.format(url_builder, venue)
     data = urlopen(url).read()
     jsond = json.loads(data)
+    print jsond
     print unicode.format(u'COUNT {0} {1} {2}', time, venue, jsond['response']['hereNow']['count']).encode("iso-8859-1")
     for item in jsond['response']['hereNow']['items']:
         user = item['user']
