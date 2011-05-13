@@ -2,6 +2,8 @@
 from urllib2 import urlopen
 import json
 from datetime import datetime
+from sys import argv
+from os import path
 
 venues = ['40b3de00f964a52027001fe3',
           '4ad4e8faf964a5209ffc20e3',
@@ -26,12 +28,21 @@ venues = ['40b3de00f964a52027001fe3',
           '437e6b00f964a520bd2a1fe3']
 time = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
 url_builder = 'https://api.foursquare.com/v2/venues/{0}/herenow?client_id=MNSGUJNRDL2NU01ELWC4QFE5HOQSC3AI2UMV1PHDL1F2SLOM&client_secret=5AMGF43FMANQSEWQJ124XXWZOXY2RPFGF5BGWJ0F5I2G0PIT'
+script = path.splitext(path.split(argv[0])[1])[0]
+raw = open(str.format('data.{0}.raw', script), 'a+')
+processed = open(str.format('data.{0}.proc', script), 'a+')
 for venue in venues:
     try:
         url = str.format(url_builder, venue)
         data = urlopen(url).read()
+        raw.write(data)
         jsond = json.loads(data)
         # COUNT time venue count
         print str.format('COUNT {0} {1} {2}', time, venue, jsond['response']['hereNow']['count'])
+        processed.writelines([str.format('COUNT {0} {1} {2}', time, venue, jsond['response']['hereNow']['count'])])
     except:
         pass
+raw.flush()
+processed.flush()
+raw.close()
+processed.close()
