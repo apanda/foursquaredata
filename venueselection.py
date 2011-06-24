@@ -25,7 +25,7 @@ for location in locations:
     interesting = jsond['response']['groups']
     for group in interesting:
         for item in group['items']:
-            locationdict[item['id']] = unicode.format(u'{0} {1}', item['id'], item['name'])
+            locationdict[item['id']] = unicode.format(u'{0} {1} {2} {3}', item['id'], item['name'], item['location']['lat'], item['location']['lng'])
 
 print len(locationdict)
 
